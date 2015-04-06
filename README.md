@@ -22,7 +22,7 @@ Objective-C based popular side menu view.
 
  - Create object and set to window
  
- ```objective-c
+```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     PMSideMenuViewController *sideMenuViewController = [PMSideMenuViewController sharedController];
     sideMenuViewController.delegate = self;
