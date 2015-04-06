@@ -13,6 +13,13 @@
 		9F3913551AD266CC00AF9E5E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F3913541AD266CC00AF9E5E /* Images.xcassets */; };
 		9F3913581AD266CC00AF9E5E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F3913561AD266CC00AF9E5E /* LaunchScreen.xib */; };
 		9F3913641AD266CC00AF9E5E /* PMSideMenuView_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913631AD266CC00AF9E5E /* PMSideMenuView_DemoTests.m */; };
+		9F39137C1AD268FB00AF9E5E /* PMSideMenuUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913701AD268FB00AF9E5E /* PMSideMenuUserCell.m */; };
+		9F39137D1AD268FB00AF9E5E /* PMColorGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913731AD268FB00AF9E5E /* PMColorGradientView.m */; };
+		9F39137E1AD268FB00AF9E5E /* PMColorModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913751AD268FB00AF9E5E /* PMColorModel.m */; };
+		9F39137F1AD268FB00AF9E5E /* PMSideMenuBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913771AD268FB00AF9E5E /* PMSideMenuBaseViewController.m */; };
+		9F3913801AD268FB00AF9E5E /* PMSideMenuListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913791AD268FB00AF9E5E /* PMSideMenuListView.m */; };
+		9F3913811AD268FB00AF9E5E /* PMSideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F39137B1AD268FB00AF9E5E /* PMSideMenuViewController.m */; };
+		9F3913851AD2694300AF9E5E /* PMCircleImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3913841AD2694300AF9E5E /* PMCircleImageView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +45,20 @@
 		9F39135D1AD266CC00AF9E5E /* PMSideMenuView_DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PMSideMenuView_DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F3913621AD266CC00AF9E5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F3913631AD266CC00AF9E5E /* PMSideMenuView_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PMSideMenuView_DemoTests.m; sourceTree = "<group>"; };
+		9F39136F1AD268FB00AF9E5E /* PMSideMenuUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSideMenuUserCell.h; sourceTree = "<group>"; };
+		9F3913701AD268FB00AF9E5E /* PMSideMenuUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSideMenuUserCell.m; sourceTree = "<group>"; };
+		9F3913721AD268FB00AF9E5E /* PMColorGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMColorGradientView.h; sourceTree = "<group>"; };
+		9F3913731AD268FB00AF9E5E /* PMColorGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMColorGradientView.m; sourceTree = "<group>"; };
+		9F3913741AD268FB00AF9E5E /* PMColorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMColorModel.h; sourceTree = "<group>"; };
+		9F3913751AD268FB00AF9E5E /* PMColorModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMColorModel.m; sourceTree = "<group>"; };
+		9F3913761AD268FB00AF9E5E /* PMSideMenuBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSideMenuBaseViewController.h; sourceTree = "<group>"; };
+		9F3913771AD268FB00AF9E5E /* PMSideMenuBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSideMenuBaseViewController.m; sourceTree = "<group>"; };
+		9F3913781AD268FB00AF9E5E /* PMSideMenuListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSideMenuListView.h; sourceTree = "<group>"; };
+		9F3913791AD268FB00AF9E5E /* PMSideMenuListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSideMenuListView.m; sourceTree = "<group>"; };
+		9F39137A1AD268FB00AF9E5E /* PMSideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMSideMenuViewController.h; sourceTree = "<group>"; };
+		9F39137B1AD268FB00AF9E5E /* PMSideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMSideMenuViewController.m; sourceTree = "<group>"; };
+		9F3913831AD2694300AF9E5E /* PMCircleImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMCircleImageView.h; sourceTree = "<group>"; };
+		9F3913841AD2694300AF9E5E /* PMCircleImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMCircleImageView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +82,7 @@
 		9F39133B1AD266CB00AF9E5E = {
 			isa = PBXGroup;
 			children = (
+				9F39136D1AD268FB00AF9E5E /* PMSideMenuView */,
 				9F3913461AD266CC00AF9E5E /* PMSideMenuView_Demo */,
 				9F3913601AD266CC00AF9E5E /* PMSideMenuView_DemoTests */,
 				9F3913451AD266CC00AF9E5E /* Products */,
@@ -114,6 +136,51 @@
 				9F3913621AD266CC00AF9E5E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9F39136D1AD268FB00AF9E5E /* PMSideMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				9F3913821AD2694300AF9E5E /* Views */,
+				9F39136E1AD268FB00AF9E5E /* Cell */,
+				9F3913711AD268FB00AF9E5E /* Colors */,
+				9F3913761AD268FB00AF9E5E /* PMSideMenuBaseViewController.h */,
+				9F3913771AD268FB00AF9E5E /* PMSideMenuBaseViewController.m */,
+				9F3913781AD268FB00AF9E5E /* PMSideMenuListView.h */,
+				9F3913791AD268FB00AF9E5E /* PMSideMenuListView.m */,
+				9F39137A1AD268FB00AF9E5E /* PMSideMenuViewController.h */,
+				9F39137B1AD268FB00AF9E5E /* PMSideMenuViewController.m */,
+			);
+			path = PMSideMenuView;
+			sourceTree = "<group>";
+		};
+		9F39136E1AD268FB00AF9E5E /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				9F39136F1AD268FB00AF9E5E /* PMSideMenuUserCell.h */,
+				9F3913701AD268FB00AF9E5E /* PMSideMenuUserCell.m */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		9F3913711AD268FB00AF9E5E /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				9F3913721AD268FB00AF9E5E /* PMColorGradientView.h */,
+				9F3913731AD268FB00AF9E5E /* PMColorGradientView.m */,
+				9F3913741AD268FB00AF9E5E /* PMColorModel.h */,
+				9F3913751AD268FB00AF9E5E /* PMColorModel.m */,
+			);
+			path = Colors;
+			sourceTree = "<group>";
+		};
+		9F3913821AD2694300AF9E5E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9F3913831AD2694300AF9E5E /* PMCircleImageView.h */,
+				9F3913841AD2694300AF9E5E /* PMCircleImageView.m */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,8 +282,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F3913811AD268FB00AF9E5E /* PMSideMenuViewController.m in Sources */,
+				9F39137D1AD268FB00AF9E5E /* PMColorGradientView.m in Sources */,
 				9F3913501AD266CC00AF9E5E /* ViewController.m in Sources */,
 				9F39134D1AD266CC00AF9E5E /* AppDelegate.m in Sources */,
+				9F39137F1AD268FB00AF9E5E /* PMSideMenuBaseViewController.m in Sources */,
+				9F3913851AD2694300AF9E5E /* PMCircleImageView.m in Sources */,
+				9F39137E1AD268FB00AF9E5E /* PMColorModel.m in Sources */,
+				9F39137C1AD268FB00AF9E5E /* PMSideMenuUserCell.m in Sources */,
+				9F3913801AD268FB00AF9E5E /* PMSideMenuListView.m in Sources */,
 				9F39134A1AD266CC00AF9E5E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
