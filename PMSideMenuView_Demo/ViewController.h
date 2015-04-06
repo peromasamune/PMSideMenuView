@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PMSideMenuBaseViewController.h"
 
-@interface ViewController : UIViewController
-
+@interface ViewController : PMSideMenuBaseViewController
 
 @end
 

@@ -25,20 +25,20 @@
 @end
 
 @protocol PMSideMenuListViewDelegate <NSObject>
--(void)sideMenuListViewDidSelectedItemAtIndex:(NSInteger)index;
--(void)sideMenuListViewDidCancel;
+-(void)PMSideMenuListViewDidSelectedItemAtIndex:(NSInteger)index;
+-(void)PMSideMenuListViewDidCancel;
 @end
 
 typedef enum {
-    SideMenuListItemTypeDefault     = 0,
-    SideMenuListItemTypeCircleImage = 1
-}SideMenuListItemType;
+    PMSideMenuListItemTypeDefault     = 0,
+    PMSideMenuListItemTypeCircleImage = 1
+}PMSideMenuListItemType;
 
 @interface PMSideMenuListItem : NSObject
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *imageUrl;
-@property (nonatomic) SideMenuListItemType type;
+@property (nonatomic) PMSideMenuListItemType type;
 @property (nonatomic) CGFloat cellHeight;
 
 +(PMSideMenuListItem *)itemWithTitle:(NSString *)title image:(NSString *)image;

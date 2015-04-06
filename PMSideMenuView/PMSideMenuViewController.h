@@ -27,7 +27,7 @@
 @end
 
 @protocol PMSideMenuListViewControllerDelegate <NSObject>
--(NSInteger)numberOfSideMenuListItems;
--(PMSideMenuListItem *)sideMenuListItemAtIndex:(NSInteger)index;
--(UIViewController *)sideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
+-(NSInteger)PMSideMenuNumberOfSideMenuListItems;
+-(PMSideMenuListItem *)PMSideMenuListItemAtIndex:(NSInteger)index;
+-(UIViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
 @end

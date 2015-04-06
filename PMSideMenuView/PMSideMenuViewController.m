@@ -150,8 +150,8 @@
 -(void)reloadData{
     NSMutableArray *sideMenuItemArray = [NSMutableArray array];
 
-    for (NSInteger i = 0 ; i < [self.delegate numberOfSideMenuListItems]; i++) {
-        PMSideMenuListItem *item = [self.delegate sideMenuListItemAtIndex:i];
+    for (NSInteger i = 0 ; i < [self.delegate PMSideMenuNumberOfSideMenuListItems]; i++) {
+        PMSideMenuListItem *item = [self.delegate PMSideMenuListItemAtIndex:i];
         if(item) [sideMenuItemArray addObject:item];
     }
     [self.sideMenuListView setSideMenuItems:sideMenuItemArray];
@@ -160,7 +160,7 @@
 #pragma mark - Private Method
 
 -(UIViewController *)getViewControllerFromSideMenuIndex:(NSInteger)index{
-    UIViewController* vc = (UIViewController *)[self.delegate sideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndex:index];
+    UIViewController* vc = (UIViewController *)[self.delegate PMSideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndex:index];
     return vc;
 }
 
@@ -234,7 +234,7 @@
 
 #pragma mark -- SideMenuListViewDelegate --
 
--(void)sideMenuListViewDidSelectedItemAtIndex:(NSInteger)index{
+-(void)PMSideMenuListViewDidSelectedItemAtIndex:(NSInteger)index{
     
     if (index == self.currentSideMenuIndex) {
         [self setSideMenuHidden:YES animated:YES];
@@ -244,7 +244,7 @@
     [self transitionToSepcificViewControllerFromSideMenuType:index];
 }
 
--(void)sideMenuListViewDidCancel{
+-(void)PMSideMenuListViewDidCancel{
     [self setSideMenuHidden:YES animated:YES];
 }
 

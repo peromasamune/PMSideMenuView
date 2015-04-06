@@ -9,7 +9,9 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 
-@interface AppDelegate ()
+#import "PMSideMenuViewController.h"
+
+@interface AppDelegate ()<PMSideMenuListViewControllerDelegate>
 
 @end
 
@@ -22,8 +24,10 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
 
-    ViewController *viewController = [ViewController new];
-    self.window.rootViewController = viewController;
+    PMSideMenuViewController *sideMenuViewController = [PMSideMenuViewController sharedController];
+    sideMenuViewController.delegate = self;
+    sideMenuViewController.currentSideMenuIndex = 1;
+    self.window.rootViewController = sideMenuViewController;
 
     [self.window makeKeyAndVisible];
 
@@ -50,6 +54,45 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - PMSideMenuViewControllerDelegate
+
+-(NSInteger)PMSideMenuNumberOfSideMenuListItems{
+    return 4;
+}
+
+-(PMSideMenuListItem *)PMSideMenuListItemAtIndex:(NSInteger)index{
+    if (index == 0) {
+        PMSideMenuListItem *item = [PMSideMenuListItem itemWithTitle:@"PMSideMenuView" image:@"icon"];
+        item.type = PMSideMenuListItemTypeCircleImage;
+        item.cellHeight = 200;
+        return item;
+    }
+
+    if (index == 1) {
+        return [[PMSideMenuListItem alloc] initWithTitle:@"Menu 1" image:@"menu"];
+    }
+    if (index == 2) {
+        return [[PMSideMenuListItem alloc] initWithTitle:@"Menu 2" image:@"menu"];
+    }
+    if (index == 3) {
+        return [[PMSideMenuListItem alloc] initWithTitle:@"Menu 3" image:@"menu"];
+    }
+
+    return nil;
+}
+
+-(UIViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index{
+
+    if (index == 0) {
+        return nil;
+    }
+
+    ViewController *itemViewController = [ViewController new];
+    itemViewController.title = [NSString stringWithFormat:@"Menu %ld",(long)index];
+
+    return itemViewController;
 }
 
 @end

@@ -192,7 +192,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     if (self.isAnimation) {
         return;
     }
-    [self.delegate sideMenuListViewDidCancel];
+    [self.delegate PMSideMenuListViewDidCancel];
 }
 
 #pragma mark -- UITableViewDataSource --
@@ -219,7 +219,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 
     PMSideMenuListItem *item = [self.itemArray objectAtIndex:indexPath.row];
 
-    if (item.type == SideMenuListItemTypeDefault) {
+    if (item.type == PMSideMenuListItemTypeDefault) {
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -231,7 +231,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
         return cell;
     }
 
-    if (item.type == SideMenuListItemTypeCircleImage) {
+    if (item.type == PMSideMenuListItemTypeCircleImage) {
         PMSideMenuUserCell *userCell = (PMSideMenuUserCell *)[tableView dequeueReusableCellWithIdentifier:UserCellIdentifer];
         if (!userCell) {
             userCell = [[PMSideMenuUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:UserCellIdentifer];
@@ -251,7 +251,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.delegate sideMenuListViewDidSelectedItemAtIndex:indexPath.row];
+    [self.delegate PMSideMenuListViewDidSelectedItemAtIndex:indexPath.row];
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
