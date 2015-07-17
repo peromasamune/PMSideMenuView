@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class PMSideMenuViewController;
 @interface PMSideMenuBaseViewController : UIViewController
+
+@property (nonatomic,weak) PMSideMenuViewController *sideMenu;
 
 @end

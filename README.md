@@ -24,7 +24,7 @@ Objective-C based popular side menu view.
  
 ```objective-c
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    PMSideMenuViewController *sideMenuViewController = [PMSideMenuViewController sharedController];
+    PMSideMenuViewController *sideMenuViewController = [PMSideMenuViewController new];
     sideMenuViewController.delegate = self;
     sideMenuViewController.currentSideMenuIndex = 1;
     self.window.rootViewController = sideMenuViewController;
@@ -36,7 +36,7 @@ Objective-C based popular side menu view.
 ```objective-c
 -(NSInteger)PMSideMenuNumberOfSideMenuListItems;
 -(PMSideMenuListItem *)PMSideMenuListItemAtIndex:(NSInteger)index;
--(UIViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
+-(PMSideMenuBaseViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
 ```
 
 __Examples__
@@ -67,7 +67,7 @@ __Examples__
     return nil;
 }
 
--(UIViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index{
+-(PMSideMenuBaseViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index{
 
     if (index == 0) {
         return nil;
