@@ -45,7 +45,7 @@
 
 #pragma mark -- Button Actions --
 -(void)toggleSideMenuButtonDidPush:(id)sender{
-    [[PMSideMenuViewController sharedController] toggleSideMenu];
+    [self.sideMenu toggleSideMenu];
 }
 
 @end

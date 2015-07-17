@@ -41,16 +41,6 @@
     return self;
 }
 
-#pragma mark - Shared Controller
-
-+(PMSideMenuViewController *)sharedController{
-    static PMSideMenuViewController *viewController = nil;
-    if (!viewController) {
-        viewController = [PMSideMenuViewController new];
-    }
-    return viewController;
-}
-
 #pragma mark - View Management
 
 - (void)viewDidLoad
@@ -159,12 +149,12 @@
 
 #pragma mark - Private Method
 
--(UIViewController *)getViewControllerFromSideMenuIndex:(NSInteger)index{
-    UIViewController* vc = (UIViewController *)[self.delegate PMSideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndex:index];
+-(PMSideMenuBaseViewController *)getViewControllerFromSideMenuIndex:(NSInteger)index{
+    PMSideMenuBaseViewController* vc = [self.delegate PMSideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndex:index];
     return vc;
 }
 
--(void)setContentViewController:(UIViewController *)viewController{
+-(void)setContentViewController:(PMSideMenuBaseViewController *)viewController{
     
     if (!viewController) {
         return;
@@ -181,7 +171,8 @@
         [self addChildViewController:self.contentsNavigationController];
         [self.view addSubview:self.contentsNavigationController.view];
     }
-    
+
+    viewController.sideMenu = self;
     self.contentsNavigationController.viewControllers = @[viewController];
 }
 
