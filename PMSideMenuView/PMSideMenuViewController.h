@@ -16,8 +16,6 @@
 @property (nonatomic, assign) NSInteger currentSideMenuIndex;
 @property (nonatomic) id<PMSideMenuListViewControllerDelegate> delegate;
 
-+(PMSideMenuViewController *)sharedController;
-
 -(void)transitionToSepcificViewControllerFromSideMenuType:(NSInteger)type;
 
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated;
@@ -29,5 +27,5 @@
 @protocol PMSideMenuListViewControllerDelegate <NSObject>
 -(NSInteger)PMSideMenuNumberOfSideMenuListItems;
 -(PMSideMenuListItem *)PMSideMenuListItemAtIndex:(NSInteger)index;
--(UIViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
+-(PMSideMenuBaseViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
 @end

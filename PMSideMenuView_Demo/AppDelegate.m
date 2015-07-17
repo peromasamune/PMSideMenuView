@@ -24,7 +24,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
 
-    PMSideMenuViewController *sideMenuViewController = [PMSideMenuViewController sharedController];
+    PMSideMenuViewController *sideMenuViewController = [PMSideMenuViewController new];
     sideMenuViewController.delegate = self;
     sideMenuViewController.currentSideMenuIndex = 1;
     self.window.rootViewController = sideMenuViewController;
@@ -83,7 +83,7 @@
     return nil;
 }
 
--(UIViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index{
+-(PMSideMenuBaseViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index{
 
     if (index == 0) {
         return nil;
