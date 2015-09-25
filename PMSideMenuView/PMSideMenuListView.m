@@ -10,19 +10,14 @@
 
 #import "PMSideMenuUserCell.h"
 
-#define ITEM_HEIGHT 50
-#define ITEM_WIDTH 200
-#define ITEM_OFFSET 7
-#define ANIMATION_DURATION 0.2
-
-static CGPoint previousPoint;
-static CGPoint lastMotionDiff;
+#define SIDE_MENU_ITEM_HEIGHT 50
+#define SIDE_MENU_ITEM_OFFSET 7
+#define SIDE_MENU_ANIMATION_DURATION 0.2
 
 typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 
 @interface PMSideMenuListView()<UITableViewDelegate,UITableViewDataSource>
 
-@property (nonatomic) UITableView *tableView;
 @property (nonatomic) NSArray *itemArray;
 @property (nonatomic) NSArray *sectionTitleArray;
 
@@ -40,16 +35,9 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     if (self) {
         // Initialization code
         self.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.0];
-        self.alpha = 0.0;
-        self.isVisible = NO;
-        self.isAnimation = NO;
-        self.currentSelectedIndex = 0;
         
         self.contentsView = [UIView new];
-        self.contentsView.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.9];
-        self.contentsView.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.contentsView.layer.shadowOffset = CGSizeMake(3.0, 3.0);
-        self.contentsView.layer.shadowOpacity = 0.3;
+        self.contentsView.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.0];
         [self addSubview:self.contentsView];
         
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
@@ -80,113 +68,16 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     self.sectionTitleArray = [NSArray arrayWithArray:titles];
 }
 
--(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated{
-
-    if (self.isAnimation) {
-        return;
-    }
-    
-    if (animated) {
-        self.isAnimation = YES;
-    }
-
-    if (self.tableView) {
-        self.tableView.scrollsToTop = !hidden;
-    }
-    
-    __weak PMSideMenuListView *wself = self;
-    
-    if (hidden) {
-        [UIView animateWithDuration:(animated) ? ANIMATION_DURATION : 0.0 animations:^{
-            CGRect frame = wself.contentsView.frame;
-            frame.origin.x = -frame.size.width;
-            wself.contentsView.frame = frame;
-            wself.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.0];
-        } completion:^(BOOL finished) {
-            wself.alpha = 0.0;
-            self.isAnimation = NO;
-        }];
-    }else{
-        wself.alpha = 1.0;
-        [UIView animateWithDuration:(animated) ? ANIMATION_DURATION : 0.0 animations:^{
-            CGRect frame = wself.contentsView.frame;
-            frame.origin.x = 0;
-            wself.contentsView.frame = frame;
-            wself.backgroundColor = [UIColor colorWithWhite:0.000 alpha:0.3];
-        } completion:^(BOOL finished) {
-            self.isAnimation = NO;
-        }];
-    }
-
-    _gestureRatio = !hidden;
-    _isVisible = !hidden;
-}
-
--(void)setSideMenuHiddenWithGesture:(UIPanGestureRecognizer *)gesture{
-
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        previousPoint = [gesture locationInView:self];
-        self.alpha = 1.0;
-    }
-
-    if (gesture.state == UIGestureRecognizerStateChanged) {
-        CGPoint motionPoint = [gesture locationInView:self];
-
-        CGPoint motionDiff = motionPoint;
-        motionDiff.x = motionPoint.x - previousPoint.x;
-        motionDiff.y = motionPoint.y - previousPoint.y;
-
-        CGRect contentViewRect = self.contentsView.frame;
-
-        CGFloat resultPointX = contentViewRect.origin.x + motionDiff.x;
-        if (resultPointX > 0) resultPointX = 0;
-        if (resultPointX <= -contentViewRect.size.width) resultPointX = -contentViewRect.size.width;
-
-        contentViewRect.origin.x = resultPointX;
-        self.contentsView.frame = contentViewRect;
-
-        _gestureRatio = ((contentViewRect.origin.x + self.contentsView.frame.size.width) / self.contentsView.frame.size.width);
-        self.backgroundColor = [UIColor colorWithWhite:0.000 alpha:_gestureRatio * 0.3];
-
-        previousPoint = motionPoint;
-        lastMotionDiff = motionDiff;
-    }
-
-    if (gesture.state == UIGestureRecognizerStateEnded) {
-
-        BOOL isAnimated = !(self.contentsView.frame.origin.x == -self.contentsView.frame.size.width || self.contentsView.frame.origin.x == 0);
-        BOOL isHidden = (self.contentsView.frame.origin.x < -self.contentsView.frame.size.width/2);
-
-        if (lastMotionDiff.x > 10) {
-            isHidden = NO;
-        }
-        if (lastMotionDiff.x < -10) {
-            isHidden = YES;
-        }
-
-        [self setSideMenuHidden:isHidden animated:isAnimated];
-    }
-}
-
 #pragma mark -- Private Method --
 
 -(void)reloadFrame{
-    self.contentsView.frame = CGRectMake((self.alpha > 0.0) ? 0 : -ITEM_WIDTH, 0, ITEM_WIDTH, self.frame.size.height);
+    self.contentsView.frame = CGRectMake((self.alpha > 0.0) ? 0 : -SIDE_MENU_ITEM_WIDTH, 0, SIDE_MENU_ITEM_WIDTH, self.frame.size.height);
     self.tableView.frame = CGRectMake(0, 0, self.contentsView.frame.size.width, self.contentsView.frame.size.height);
 }
 
 -(PMSideMenuListItem *)itemForIndexPath:(NSIndexPath *)indexPath{
     NSArray *rowArray = [self.itemArray objectAtIndex:indexPath.section];
     return [rowArray objectAtIndex:indexPath.row];
-}
-
-#pragma mark -- Touch Event --
-
--(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    if (self.isAnimation) {
-        return;
-    }
-    [self.delegate PMSideMenuListViewDidCancel];
 }
 
 #pragma mark -- UITableViewDataSource --

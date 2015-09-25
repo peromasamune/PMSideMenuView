@@ -11,21 +11,21 @@
 
 #define ANIMATION_DURATION 0.2
 
+static CGPoint previousPoint;
+static CGPoint lastMotionDiff;
+
 @interface PMSideMenuViewController ()<UIGestureRecognizerDelegate>
 
 @property (nonatomic) UINavigationController *contentsNavigationController;
 @property (nonatomic) PMSideMenuListView *sideMenuListView;
 @property (nonatomic) PMColorGradientView *gradientView;
 
+@property (nonatomic, assign) BOOL isAnimation, isVisible;
+@property (nonatomic) UIView *coverView;
+
 -(void)createView;
 -(UIViewController *)getViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath;
 -(void)setContentViewController:(UIViewController *)viewController;
-
--(void)transformContentViewScaleWithSideMenuHidden:(BOOL)hidden animated:(BOOL)animated;
-
--(void)detectRightSwipe:(UISwipeGestureRecognizer *)gesture;
--(void)detectLeftSwipe:(UISwipeGestureRecognizer *)gesture;
-
 @end
 
 @implementation PMSideMenuViewController
@@ -68,24 +68,33 @@
 
     UIToolbar *bulrView = [[UIToolbar alloc] initWithFrame:self.gradientView.bounds];
     bulrView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    bulrView.alpha = 0.5;
+    bulrView.alpha = 1.0;
     [self.view addSubview:bulrView];
 
-    UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:self.currentSideMenuIndexPath];
-    [self setContentViewController:vc];
-    
     self.sideMenuListView = [[PMSideMenuListView alloc] initWithFrame:self.view.bounds];
     self.sideMenuListView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.sideMenuListView.delegate = self;
     [self.view addSubview:self.sideMenuListView];
+    
+    UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:self.currentSideMenuIndexPath];
+    [self setContentViewController:vc];
+    
+    self.coverView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.coverView.backgroundColor = [UIColor clearColor];
+    [self.contentsNavigationController.view addSubview:self.coverView];
+    self.coverView.hidden = !self.isVisible;
 
-    UIPanGestureRecognizer *rightSwipeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(detectRightSwipe:)];
+    UIPanGestureRecognizer *rightSwipeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(detectPanGesture:)];
     rightSwipeGesture.delegate = self;
     [self.view addGestureRecognizer:rightSwipeGesture];
 
-    UIPanGestureRecognizer *leftSwipeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(detectLeftSwipe:)];
+    UIPanGestureRecognizer *leftSwipeGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(detectPanGesture:)];
     leftSwipeGesture.delegate = self;
     [self.view addGestureRecognizer:leftSwipeGesture];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(detectTapGesture:)];
+    tapGesture.delegate = self;
+    [self.contentsNavigationController.view addGestureRecognizer:tapGesture];
 
     [self reloadData];
 }
@@ -99,7 +108,7 @@
         return;
     }
 
-    if (self.sideMenuListView.isVisible) {
+    if (self.isVisible) {
         [self setSideMenuHidden:YES animated:YES];
     }
     [self setContentViewController:vc];
@@ -109,32 +118,57 @@
 
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated{
 
-    if (hidden) {
-        [self.sideMenuListView setSideMenuHidden:hidden animated:animated];
-        double delayInSeconds = ANIMATION_DURATION;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self transformContentViewScaleWithSideMenuHidden:hidden animated:animated];
-        });
-    }else{
-        [self transformContentViewScaleWithSideMenuHidden:hidden animated:animated];
-        double delayInSeconds = ANIMATION_DURATION;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self.sideMenuListView setSideMenuHidden:hidden animated:animated];
-        });
+    if (self.isAnimation) {
+        return;
     }
+    
+    if (animated) {
+        self.isAnimation = YES;
+    }
+    
+    if (self.sideMenuListView.tableView) {
+        self.sideMenuListView.tableView.scrollsToTop = !hidden;
+    }
+    
+    __weak UIView *wContentsView = self.contentsNavigationController.view;
+    
+    
+    if (hidden) {
+        if (animated) {
+            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
+                wContentsView.frame = self.view.frame;
+            } completion:^(BOOL finished) {
+                self.isAnimation = NO;
+            }];
+        }else{
+            wContentsView.frame = self.view.frame;
+        }
+    }else{
+        CGRect targetFrame = wContentsView.frame;
+        targetFrame.origin.x = SIDE_MENU_ITEM_WIDTH;
+        
+        if (animated) {
+            [UIView animateWithDuration:ANIMATION_DURATION delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                wContentsView.frame = targetFrame;
+            } completion:^(BOOL finished) {
+                self.isAnimation = NO;
+            }];
+        }else{
+            wContentsView.frame = targetFrame;
+        }
+    }
+    
+    _isVisible = !hidden;
+    self.coverView.hidden = hidden;
 }
 
 -(void)toggleSideMenu{
 
-    if (self.sideMenuListView.isAnimation) {
+    if (self.isAnimation) {
         return;
     }
 
-    BOOL isSidemenuVisible = self.sideMenuListView.isVisible;
-
-    [self setSideMenuHidden:isSidemenuVisible animated:YES];
+    [self setSideMenuHidden:self.isVisible animated:YES];
 }
 
 -(void)reloadData{
@@ -178,7 +212,8 @@
         self.contentsNavigationController.view.frame = self.view.bounds;
         self.contentsNavigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         self.contentsNavigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;
-        self.contentsNavigationController.view.layer.shadowOffset = CGSizeMake(3.0, 3.0);
+        self.contentsNavigationController.view.layer.shadowOffset = CGSizeMake(-1.0, 1.0);
+        self.contentsNavigationController.view.layer.shadowRadius = 5.0;
         self.contentsNavigationController.view.layer.shadowOpacity = 0.3;
         
         [self addChildViewController:self.contentsNavigationController];
@@ -193,50 +228,45 @@
 
 #pragma mark -- SideMenu View Transform --
 
--(void)transformContentViewScaleWithSideMenuHidden:(BOOL)hidden animated:(BOOL)animated{
-    
-    __weak UIView *wContentsView = self.contentsNavigationController.view;
-
-
-    if (hidden) {
-        if (animated) {
-            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-                wContentsView.transform = CGAffineTransformIdentity;
-                wContentsView.frame = self.gradientView.frame;
-            } completion:^(BOOL finished) {
-
-            }];
-        }else{
-            wContentsView.transform = CGAffineTransformIdentity;
-            wContentsView.frame = self.gradientView.frame;
-        }
-    }else{
-        if (animated) {
-            [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-                wContentsView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
-            } completion:^(BOOL finished) {
-                
-            }];
-        }else{
-            wContentsView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
-        }
-    }
-}
-
 -(void)transformContentViewScaleWithGesture:(UIPanGestureRecognizer *)gesture{
+    
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        previousPoint = [gesture locationInView:self.view];
+    }
+    
     if (gesture.state == UIGestureRecognizerStateChanged) {
-        CGFloat ratio = self.sideMenuListView.gestureRatio;
-        CGFloat cRatio = (1 - ratio) * 0.1 + 0.9;
-
-        self.contentsNavigationController.view.transform = CGAffineTransformScale(CGAffineTransformIdentity, cRatio, cRatio);
+        CGPoint motionPoint = [gesture locationInView:self.view];
+        
+        CGPoint motionDiff = motionPoint;
+        motionDiff.x = motionPoint.x - previousPoint.x;
+        motionDiff.y = motionPoint.y - previousPoint.y;
+        
+        CGRect contentViewRect = self.contentsNavigationController.view.frame;
+        
+        CGFloat resultPointX = contentViewRect.origin.x + motionDiff.x;
+        if (resultPointX >= SIDE_MENU_ITEM_WIDTH) resultPointX = SIDE_MENU_ITEM_WIDTH;
+        if (resultPointX <= 0) resultPointX = 0;
+        
+        contentViewRect.origin.x = resultPointX;
+        self.contentsNavigationController.view.frame = contentViewRect;
+        
+        previousPoint = motionPoint;
+        lastMotionDiff = motionDiff;
     }
 
     if (gesture.state == UIGestureRecognizerStateEnded) {
-        [self transformContentViewScaleWithSideMenuHidden:!self.sideMenuListView.isVisible animated:YES];
+        CGRect contentViewRect = self.contentsNavigationController.view.frame;
+        BOOL isAnimated = !(contentViewRect.origin.x == 0 || contentViewRect.origin.x == SIDE_MENU_ITEM_WIDTH);
+        BOOL isHidden = (contentViewRect.origin.x  < SIDE_MENU_ITEM_WIDTH / 2);
+        
+        if (lastMotionDiff.x > 10) isHidden = NO;
+        if (lastMotionDiff.x < -10) isHidden = YES;
+        
+        [self setSideMenuHidden:isHidden animated:isAnimated];
     }
 }
 
-#pragma mark -- SideMenuListViewDelegate --
+#pragma mark - SideMenuListViewDelegate
 
 -(void)PMSideMenuListViewDidSelectedItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -248,36 +278,37 @@
     [self transitionToSepcificViewControllerFromSideMenuIndexPath:indexPath];
 }
 
--(void)PMSideMenuListViewDidCancel{
+#pragma mark - Gesture Action
+
+-(void)detectTapGesture:(UITapGestureRecognizer *)gesture{
     [self setSideMenuHidden:YES animated:YES];
 }
 
-#pragma mark - Gesture Action
-
--(void)detectRightSwipe:(UIPanGestureRecognizer *)gesture{
-    [self.sideMenuListView setSideMenuHiddenWithGesture:gesture];
-    [self transformContentViewScaleWithGesture:gesture];
-}
-
--(void)detectLeftSwipe:(UIPanGestureRecognizer *)gesture{
-    [self.sideMenuListView setSideMenuHiddenWithGesture:gesture];
+-(void)detectPanGesture:(UIPanGestureRecognizer *)gesture{
     [self transformContentViewScaleWithGesture:gesture];
 }
 
 #pragma mark - UISwipeGestureRecognizerDelegate
 
--(BOOL)gestureRecognizer:(UIPanGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
 
-    if (!self.sideMenuListView.isVisible) {
+    if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+        if (self.isVisible) {
+            return YES;
+        }
+        return NO;
+    }
+    
+    if (!self.isVisible) {
         CGPoint touchPoint = [touch locationInView:self.view];
         if (touchPoint.x < 20) {
             return YES;
         }
     }
 
-    if (self.sideMenuListView.isVisible) {
+    if (self.isVisible) {
         CGPoint touchPoint = [touch locationInView:self.view];
-        if (CGRectContainsPoint(self.sideMenuListView.contentsView.frame, touchPoint)) {
+        if (CGRectContainsPoint(self.contentsNavigationController.view.frame, touchPoint)) {
             return YES;
         }
     }
