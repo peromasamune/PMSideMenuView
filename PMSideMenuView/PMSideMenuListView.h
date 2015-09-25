@@ -19,13 +19,14 @@
 @property (nonatomic, assign, readonly) CGFloat gestureRatio;
 
 -(void)setSideMenuItems:(NSArray *)items;
+-(void)setSideMenuSectionTitles:(NSArray *)titles;
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated;
 -(void)setSideMenuHiddenWithGesture:(UIPanGestureRecognizer *)gesture;
 
 @end
 
 @protocol PMSideMenuListViewDelegate <NSObject>
--(void)PMSideMenuListViewDidSelectedItemAtIndex:(NSInteger)index;
+-(void)PMSideMenuListViewDidSelectedItemAtIndexPath:(NSIndexPath *)indexPath;
 -(void)PMSideMenuListViewDidCancel;
 @end
 

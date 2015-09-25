@@ -18,7 +18,7 @@
 @property (nonatomic) PMColorGradientView *gradientView;
 
 -(void)createView;
--(UIViewController *)getViewControllerFromSideMenuIndex:(NSInteger)index;
+-(UIViewController *)getViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath;
 -(void)setContentViewController:(UIViewController *)viewController;
 
 -(void)transformContentViewScaleWithSideMenuHidden:(BOOL)hidden animated:(BOOL)animated;
@@ -71,7 +71,7 @@
     bulrView.alpha = 0.5;
     [self.view addSubview:bulrView];
 
-    UIViewController *vc = [self getViewControllerFromSideMenuIndex:self.currentSideMenuIndex];
+    UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:self.currentSideMenuIndexPath];
     [self setContentViewController:vc];
     
     self.sideMenuListView = [[PMSideMenuListView alloc] initWithFrame:self.view.bounds];
@@ -92,8 +92,8 @@
 
 #pragma mark - Class Method
 
--(void)transitionToSepcificViewControllerFromSideMenuType:(NSInteger)type{
-    UIViewController *vc = [self getViewControllerFromSideMenuIndex:type];
+-(void)transitionToSepcificViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath{
+    UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:indexPath];
 
     if (!vc) {
         return;
@@ -104,7 +104,7 @@
     }
     [self setContentViewController:vc];
 
-    self.currentSideMenuIndex = type;
+    self.currentSideMenuIndexPath = indexPath;
 }
 
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated{
@@ -139,18 +139,31 @@
 
 -(void)reloadData{
     NSMutableArray *sideMenuItemArray = [NSMutableArray array];
+    NSMutableArray *sectionTitleArray = [NSMutableArray array];
 
-    for (NSInteger i = 0 ; i < [self.delegate PMSideMenuNumberOfSideMenuListItems]; i++) {
-        PMSideMenuListItem *item = [self.delegate PMSideMenuListItemAtIndex:i];
-        if(item) [sideMenuItemArray addObject:item];
+    for (NSInteger i = 0 ; i < [self.delegate PMSideMenuNumberOfSections]; i++) {
+        //Items
+        NSMutableArray *sectionItems = [NSMutableArray array];
+        for (NSInteger j = 0; j < [self.delegate PMSideMenuNumberOfSideMenuListItemsAtSection:i]; j++) {
+            PMSideMenuListItem *item = [self.delegate PMSideMenuListItemAtIndexPath:[NSIndexPath indexPathForRow:j inSection:i]];
+            if(item) [sectionItems addObject:item];
+        }
+        [sideMenuItemArray addObject:sectionItems];
+        
+        //Secton Titles
+        if ([self.delegate respondsToSelector:@selector(PMSideMenuViewController:titleForSection:)]) {
+            NSString *title = [self.delegate PMSideMenuViewController:self titleForSection:i];
+            [sectionTitleArray addObject:(title) ? title : @""];
+        }
     }
     [self.sideMenuListView setSideMenuItems:sideMenuItemArray];
+    [self.sideMenuListView setSideMenuSectionTitles:sectionTitleArray];
 }
 
 #pragma mark - Private Method
 
--(PMSideMenuBaseViewController *)getViewControllerFromSideMenuIndex:(NSInteger)index{
-    PMSideMenuBaseViewController* vc = [self.delegate PMSideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndex:index];
+-(PMSideMenuBaseViewController *)getViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath{
+    PMSideMenuBaseViewController* vc = [self.delegate PMSideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndexPath:indexPath];
     return vc;
 }
 
@@ -225,14 +238,14 @@
 
 #pragma mark -- SideMenuListViewDelegate --
 
--(void)PMSideMenuListViewDidSelectedItemAtIndex:(NSInteger)index{
+-(void)PMSideMenuListViewDidSelectedItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    if (index == self.currentSideMenuIndex) {
+    if ([indexPath compare:self.currentSideMenuIndexPath] == NSOrderedSame) {
         [self setSideMenuHidden:YES animated:YES];
         return;
     }
     
-    [self transitionToSepcificViewControllerFromSideMenuType:index];
+    [self transitionToSepcificViewControllerFromSideMenuIndexPath:indexPath];
 }
 
 -(void)PMSideMenuListViewDidCancel{

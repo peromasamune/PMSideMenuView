@@ -23,20 +23,14 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 @interface PMSideMenuListView()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic) UITableView *tableView;
-@property (nonatomic) NSMutableArray *itemArray;
+@property (nonatomic) NSArray *itemArray;
+@property (nonatomic) NSArray *sectionTitleArray;
 
 -(void)reloadFrame;
 
 @end
 
 @implementation PMSideMenuListView
-
-@synthesize isVisible = isVisible_, isAnimation = isAnimation_;
-@synthesize currentSelectedIndex = currentSelectedIndex_;
-@synthesize delegate = delegate_;
-@synthesize contentsView = contentsView_;
-@synthesize tableView = tableView_;
-@synthesize itemArray = itemArray_;
 
 #pragma mark -- Initialize --
 
@@ -58,7 +52,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
         self.contentsView.layer.shadowOpacity = 0.3;
         [self addSubview:self.contentsView];
         
-        self.tableView = [UITableView new];
+        self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
@@ -78,20 +72,15 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 #pragma mark -- Class Method --
 
 -(void)setSideMenuItems:(NSArray *)items{
-    self.itemArray = [NSMutableArray array];
-    
-    for (PMSideMenuListItem *item in items){
-        [self.itemArray addObject:item];
-    }
-    
+    self.itemArray = [NSArray arrayWithArray:items];
     [self reloadFrame];
 }
 
+-(void)setSideMenuSectionTitles:(NSArray *)titles{
+    self.sectionTitleArray = [NSArray arrayWithArray:titles];
+}
+
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated{
-    
-//    if (isVisible_ == !hidden) {
-//        return;
-//    }
 
     if (self.isAnimation) {
         return;
@@ -130,7 +119,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     }
 
     _gestureRatio = !hidden;
-    isVisible_ = !hidden;
+    _isVisible = !hidden;
 }
 
 -(void)setSideMenuHiddenWithGesture:(UIPanGestureRecognizer *)gesture{
@@ -186,6 +175,11 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     self.tableView.frame = CGRectMake(0, 0, self.contentsView.frame.size.width, self.contentsView.frame.size.height);
 }
 
+-(PMSideMenuListItem *)itemForIndexPath:(NSIndexPath *)indexPath{
+    NSArray *rowArray = [self.itemArray objectAtIndex:indexPath.section];
+    return [rowArray objectAtIndex:indexPath.row];
+}
+
 #pragma mark -- Touch Event --
 
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
@@ -198,15 +192,24 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 #pragma mark -- UITableViewDataSource --
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.itemArray count];
 }
 
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSArray *rowArray = (NSArray *)[self.itemArray objectAtIndex:section];
+    return [rowArray count];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if (self.sectionTitleArray.count > section) {
+        NSString *title = [self.sectionTitleArray objectAtIndex:section];
+        return title;
+    }
+    return nil;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    PMSideMenuListItem *item = [self.itemArray objectAtIndex:indexPath.row];
+    PMSideMenuListItem *item = [self itemForIndexPath:indexPath];
     if (item.cellHeight) {
         return item.cellHeight;
     }
@@ -217,7 +220,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     static NSString *CellIdentifier = @"Cell";
     static NSString *UserCellIdentifer = @"UserCell";
 
-    PMSideMenuListItem *item = [self.itemArray objectAtIndex:indexPath.row];
+    PMSideMenuListItem *item = [self itemForIndexPath:indexPath];
 
     if (item.type == PMSideMenuListItemTypeDefault) {
         UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -251,7 +254,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self.delegate PMSideMenuListViewDidSelectedItemAtIndex:indexPath.row];
+    [self.delegate PMSideMenuListViewDidSelectedItemAtIndexPath:indexPath];
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{

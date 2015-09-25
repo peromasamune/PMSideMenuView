@@ -13,10 +13,10 @@
 @protocol PMSideMenuListViewControllerDelegate;
 @interface PMSideMenuViewController : UIViewController<PMSideMenuListViewDelegate>
 
-@property (nonatomic, assign) NSInteger currentSideMenuIndex;
+@property (nonatomic) NSIndexPath *currentSideMenuIndexPath;
 @property (nonatomic) id<PMSideMenuListViewControllerDelegate> delegate;
 
--(void)transitionToSepcificViewControllerFromSideMenuType:(NSInteger)type;
+-(void)transitionToSepcificViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath;
 
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated;
 -(void)toggleSideMenu;
@@ -25,7 +25,10 @@
 @end
 
 @protocol PMSideMenuListViewControllerDelegate <NSObject>
--(NSInteger)PMSideMenuNumberOfSideMenuListItems;
--(PMSideMenuListItem *)PMSideMenuListItemAtIndex:(NSInteger)index;
--(PMSideMenuBaseViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndex:(NSInteger)index;
+-(NSInteger)PMSideMenuNumberOfSideMenuListItemsAtSection:(NSInteger)section;
+-(NSInteger)PMSideMenuNumberOfSections;
+-(PMSideMenuListItem *)PMSideMenuListItemAtIndexPath:(NSIndexPath*)indexPath;
+-(PMSideMenuBaseViewController *)PMSideMenuViewController:(PMSideMenuViewController *)viewController transitonViewControllerWhenSelectedItemAtIndexPath:(NSIndexPath *)indexPath;
+@optional
+-(NSString *)PMSideMenuViewController:(PMSideMenuViewController *)viewController titleForSection:(NSInteger)section;
 @end
