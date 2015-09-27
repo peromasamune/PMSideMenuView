@@ -61,19 +61,20 @@ static CGPoint lastMotionDiff;
 
 -(void)createView{
 
-    self.gradientView = [[PMColorGradientView alloc] initWithFrame:self.view.bounds];
-    self.gradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.gradientView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.gradientView];
-
-    UIToolbar *bulrView = [[UIToolbar alloc] initWithFrame:self.gradientView.bounds];
-    bulrView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    bulrView.alpha = 1.0;
-    [self.view addSubview:bulrView];
+//    self.gradientView = [[PMColorGradientView alloc] initWithFrame:self.view.bounds];
+//    self.gradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    self.gradientView.backgroundColor = [UIColor clearColor];
+//    [self.view addSubview:self.gradientView];
+//
+//    UIToolbar *bulrView = [[UIToolbar alloc] initWithFrame:self.view.bounds];
+//    bulrView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//    bulrView.alpha = 1.0;
+//    [self.view addSubview:bulrView];
 
     self.sideMenuListView = [[PMSideMenuListView alloc] initWithFrame:self.view.bounds];
     self.sideMenuListView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.sideMenuListView.delegate = self;
+    self.sideMenuListView.currentSideMenuIndexPath = self.currentSideMenuIndexPath;
     [self.view addSubview:self.sideMenuListView];
     
     UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:self.currentSideMenuIndexPath];
@@ -114,6 +115,7 @@ static CGPoint lastMotionDiff;
     [self setContentViewController:vc];
 
     self.currentSideMenuIndexPath = indexPath;
+    self.sideMenuListView.currentSideMenuIndexPath = indexPath;
 }
 
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated{
@@ -144,6 +146,8 @@ static CGPoint lastMotionDiff;
             wContentsView.frame = self.view.frame;
         }
     }else{
+        [self reloadData];
+        
         CGRect targetFrame = wContentsView.frame;
         targetFrame.origin.x = SIDE_MENU_ITEM_WIDTH;
         
@@ -190,11 +194,13 @@ static CGPoint lastMotionDiff;
             [sectionTitleArray addObject:(title) ? title : @""];
         }
     }
+    
     [self.sideMenuListView setSideMenuItems:sideMenuItemArray];
     [self.sideMenuListView setSideMenuSectionTitles:sectionTitleArray];
+    [self.sideMenuListView.tableView reloadData];
 }
 
-#pragma mark - Private Method
+#pragma mark - Private method
 
 -(PMSideMenuBaseViewController *)getViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath{
     PMSideMenuBaseViewController* vc = [self.delegate PMSideMenuViewController:self transitonViewControllerWhenSelectedItemAtIndexPath:indexPath];

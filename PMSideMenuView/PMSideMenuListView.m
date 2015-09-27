@@ -9,6 +9,7 @@
 #import "PMSideMenuListView.h"
 
 #import "PMSideMenuUserCell.h"
+#import "PMSideMenuBasicCell.h"
 
 #define SIDE_MENU_ITEM_HEIGHT 50
 #define SIDE_MENU_ITEM_OFFSET 7
@@ -27,7 +28,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 
 @implementation PMSideMenuListView
 
-#pragma mark -- Initialize --
+#pragma mark - Initializer
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -42,6 +43,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
         
         self.tableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStyleGrouped];
         self.tableView.backgroundColor = [UIColor clearColor];
+        self.tableView.separatorColor = [UIColor clearColor];
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
@@ -57,7 +59,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     [self reloadFrame];
 }
 
-#pragma mark -- Class Method --
+#pragma mark - Class method
 
 -(void)setSideMenuItems:(NSArray *)items{
     self.itemArray = [NSArray arrayWithArray:items];
@@ -68,7 +70,14 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     self.sectionTitleArray = [NSArray arrayWithArray:titles];
 }
 
-#pragma mark -- Private Method --
+#pragma mark - Property Method
+
+-(void)setCurrentSideMenuIndexPath:(NSIndexPath *)currentSideMenuIndexPath{
+    _currentSideMenuIndexPath = currentSideMenuIndexPath;
+    [self.tableView reloadData];
+}
+
+#pragma mark - Private method
 
 -(void)reloadFrame{
     self.contentsView.frame = CGRectMake((self.alpha > 0.0) ? 0 : -SIDE_MENU_ITEM_WIDTH, 0, SIDE_MENU_ITEM_WIDTH, self.frame.size.height);
@@ -80,7 +89,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     return [rowArray objectAtIndex:indexPath.row];
 }
 
-#pragma mark -- UITableViewDataSource --
+#pragma mark - UITableViewDataSource
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return [self.itemArray count];
@@ -99,6 +108,10 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     return nil;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.01;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     PMSideMenuListItem *item = [self itemForIndexPath:indexPath];
     if (item.cellHeight) {
@@ -114,13 +127,16 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     PMSideMenuListItem *item = [self itemForIndexPath:indexPath];
 
     if (item.type == PMSideMenuListItemTypeDefault) {
-        UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        PMSideMenuBasicCell *cell = (PMSideMenuBasicCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell = [[PMSideMenuBasicCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
 
         cell.textLabel.text = item.title;
-        cell.imageView.image = [UIImage imageNamed:item.imageUrl];
+        cell.colorImageView.originalImage = [UIImage imageNamed:item.imageUrl];
+        cell.highlightedColor = item.tintColor;
+        cell.isCellSelected = ([self.currentSideMenuIndexPath compare:indexPath] == NSOrderedSame);
+        cell.badgeView.text = (item.badgeCount) ? [NSString stringWithFormat:@"%ld",item.badgeCount] : nil;
 
         return cell;
     }
@@ -141,7 +157,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
     return nil;
 }
 
-#pragma mark -- UITableViewDelegate --
+#pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -149,23 +165,24 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    cell.backgroundColor = [UIColor clearColor];
+    //cell.backgroundColor = [UIColor clearColor];
 }
 
 @end
 
 @implementation PMSideMenuListItem
 
-+(PMSideMenuListItem *)itemWithTitle:(NSString *)title image:(NSString *)image{
-    PMSideMenuListItem *item = [[PMSideMenuListItem alloc] initWithTitle:title image:image];
++(PMSideMenuListItem *)itemWithTitle:(NSString *)title image:(NSString *)image tintColor:(UIColor *)tintColor{
+    PMSideMenuListItem *item = [[PMSideMenuListItem alloc] initWithTitle:title image:image tintColor:tintColor];
     return item;
 }
 
--(id)initWithTitle:(NSString *)title image:(NSString *)image{
+-(id)initWithTitle:(NSString *)title image:(NSString *)image tintColor:(UIColor *)tintColor{
     self = [super init];
     if (self) {
         self.title = title;
         self.imageUrl = image;
+        self.tintColor = (tintColor) ? tintColor : [UIColor lightGrayColor];
     }
     return self;
 }

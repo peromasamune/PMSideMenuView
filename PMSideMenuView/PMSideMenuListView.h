@@ -17,6 +17,7 @@
 @property (nonatomic) UIView *contentsView;
 @property (nonatomic) UITableView *tableView;
 @property (nonatomic, assign) id<PMSideMenuListViewDelegate> delegate;
+@property (nonatomic) NSIndexPath *currentSideMenuIndexPath;
 
 -(void)setSideMenuItems:(NSArray *)items;
 -(void)setSideMenuSectionTitles:(NSArray *)titles;
@@ -37,9 +38,11 @@ typedef enum {
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *imageUrl;
 @property (nonatomic) PMSideMenuListItemType type;
-@property (nonatomic) CGFloat cellHeight;
+@property (nonatomic,assign) CGFloat cellHeight;
+@property (nonatomic) UIColor *tintColor;
+@property (nonatomic) NSInteger badgeCount;
 
-+(PMSideMenuListItem *)itemWithTitle:(NSString *)title image:(NSString *)image;
--(id)initWithTitle:(NSString *)title image:(NSString *)image;
++(PMSideMenuListItem *)itemWithTitle:(NSString *)title image:(NSString *)image tintColor:(UIColor *)tintColor;
+-(id)initWithTitle:(NSString *)title image:(NSString *)image tintColor:(UIColor *)tintColor;
 
 @end
