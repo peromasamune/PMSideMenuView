@@ -8,6 +8,7 @@
 
 #import "PMSideMenuViewController.h"
 #import "PMColorGradientView.h"
+#import "WMNavigationBar.h"
 
 #define ANIMATION_DURATION 0.2
 
@@ -214,7 +215,7 @@ static CGPoint lastMotionDiff;
     }
     
     if (!self.contentsNavigationController) {
-        self.contentsNavigationController = [[UINavigationController alloc] init];
+        self.contentsNavigationController = [[UINavigationController alloc] initWithNavigationBarClass:[WMNavigationBar class] toolbarClass:nil];
         self.contentsNavigationController.view.frame = self.view.bounds;
         self.contentsNavigationController.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         self.contentsNavigationController.view.layer.shadowColor = [UIColor blackColor].CGColor;

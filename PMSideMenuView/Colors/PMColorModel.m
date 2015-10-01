@@ -10,6 +10,8 @@
 
 @implementation PMColorModel
 
+static UIColor *todayColor;
+
 +(NSArray *)colorList{
     NSArray *colorArray = @[[UIColor colorWithRed:0.749 green:0.220 blue:0.188 alpha:1.000],
                             [UIColor colorWithRed:0.761 green:0.416 blue:0.157 alpha:1.000],
@@ -52,6 +54,14 @@
     UIColor *color2 = (UIColor *)[colorArray objectAtIndex:random2];
     
     return [NSArray arrayWithObjects:(id)color1.CGColor,(id)color2.CGColor, nil];
+}
+
++(void)setTodayColor{
+    todayColor = [self getRandomColor];
+}
+
++(UIColor *)todayColor {
+    return todayColor;
 }
 
 @end

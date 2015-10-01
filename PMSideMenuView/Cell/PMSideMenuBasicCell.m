@@ -42,6 +42,11 @@
         self.badgeView = [LKBadgeView new];
         self.badgeView.horizontalAlignment = LKBadgeViewHorizontalAlignmentRight;
         [self.contentView addSubview:self.badgeView];
+        
+        self.indicatorImageView = [PMTintColorImageView new];
+        self.indicatorImageView.backgroundColor = [UIColor clearColor];
+        [self.indicatorImageView setOriginalImage:[UIImage imageNamed:@"desc_arrow_right_gray"]];
+        [self.contentView addSubview:self.indicatorImageView];
     }
     return self;
 }
@@ -62,10 +67,13 @@
     
     self.badgeView.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - 50 - BADGE_MARGIN, contentHeight/2 - 10, 50, 20);
     
+    CGFloat indicatorSizeUnit = 17;
+    self.indicatorImageView.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - IMAGE_MARGIN - indicatorSizeUnit, CGRectGetHeight(self.contentView.frame) / 2 - indicatorSizeUnit / 2, indicatorSizeUnit, indicatorSizeUnit);
+    
     if (self.badgeView.text.length > 0) {
-        self.accessoryType = UITableViewCellAccessoryNone;
+        self.indicatorImageView.hidden = YES;
     }else{
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        self.indicatorImageView.hidden = NO;
     }
 }
 
@@ -75,6 +83,7 @@
     if (highlighted) {
         [self.colorImageView setImageColor:self.highlightedColor];
         self.textLabel.textColor = self.highlightedColor;
+        [self.indicatorImageView setImageColor:self.highlightedColor];
     }else{
         [self updateAppearance];
     }
@@ -88,11 +97,13 @@
         self.textLabel.textColor = self.highlightedColor;
         self.indexView.backgroundColor = self.highlightedColor;
         self.badgeView.badgeColor = self.highlightedColor;
+        [self.indicatorImageView setImageColor:self.highlightedColor];
     }else{
         [self.colorImageView setImageColor:nil];
         self.textLabel.textColor = [UIColor blackColor];
         self.indexView.backgroundColor = [UIColor clearColor];
         self.badgeView.badgeColor = [UIColor grayColor];
+        [self.indicatorImageView setImageColor:nil];
     }
 }
 

@@ -16,4 +16,7 @@
 +(UIColor *)gradientBaseDarkColor;
 +(NSArray *)getNearRandomColorsForGradient;
 
++(void)setTodayColor;
++(UIColor *)todayColor;
+
 @end

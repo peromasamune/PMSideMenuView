@@ -16,6 +16,7 @@
 @property (nonatomic) PMTintColorImageView *colorImageView;
 @property (nonatomic) UILabel *textLabel;
 @property (nonatomic) LKBadgeView *badgeView;
+@property (nonatomic) PMTintColorImageView *indicatorImageView;
 
 @property (nonatomic) UIColor *highlightedColor;
 @property (nonatomic, assign) BOOL isCellSelected;
