@@ -65,10 +65,10 @@
     
     self.textLabel.frame = CGRectMake(offsetX, 0, CGRectGetWidth(self.contentView.frame) - offsetX, contentHeight);
     
-    self.badgeView.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - 50 - BADGE_MARGIN, contentHeight/2 - 10, 50, 20);
+    self.badgeView.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - 50 - BADGE_MARGIN * 2, contentHeight/2 - 10, 50, 20);
     
     CGFloat indicatorSizeUnit = 17;
-    self.indicatorImageView.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - IMAGE_MARGIN - indicatorSizeUnit, CGRectGetHeight(self.contentView.frame) / 2 - indicatorSizeUnit / 2, indicatorSizeUnit, indicatorSizeUnit);
+    self.indicatorImageView.frame = CGRectMake(CGRectGetWidth(self.contentView.frame) - IMAGE_MARGIN * 2 - indicatorSizeUnit, CGRectGetHeight(self.contentView.frame) / 2 - indicatorSizeUnit / 2, indicatorSizeUnit, indicatorSizeUnit);
     
     if (self.badgeView.text.length > 0) {
         self.indicatorImageView.hidden = YES;
