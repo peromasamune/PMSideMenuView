@@ -43,6 +43,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Public method
+
+-(void)viewWillTransition{
+    
+}
+
 #pragma mark -- Button Actions --
 -(void)toggleSideMenuButtonDidPush:(id)sender{
     [self.sideMenu toggleSideMenu];

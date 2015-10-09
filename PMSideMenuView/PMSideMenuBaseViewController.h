@@ -13,4 +13,6 @@
 
 @property (nonatomic,weak) PMSideMenuViewController *sideMenu;
 
+-(void)viewWillTransition;
+
 @end

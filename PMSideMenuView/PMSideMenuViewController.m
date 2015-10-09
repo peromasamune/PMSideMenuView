@@ -139,17 +139,17 @@ static CGPoint lastMotionDiff;
     if (hidden) {
         if (animated) {
             [UIView animateWithDuration:ANIMATION_DURATION animations:^{
-                wContentsView.frame = self.view.frame;
+                wContentsView.frame = self.view.bounds;
             } completion:^(BOOL finished) {
                 self.isAnimation = NO;
             }];
         }else{
-            wContentsView.frame = self.view.frame;
+            wContentsView.frame = self.view.bounds;
         }
     }else{
         [self reloadData];
         
-        CGRect targetFrame = wContentsView.frame;
+        CGRect targetFrame = wContentsView.bounds;
         targetFrame.origin.x = SIDE_MENU_ITEM_WIDTH;
         
         if (animated) {
@@ -229,6 +229,7 @@ static CGPoint lastMotionDiff;
 
     viewController.sideMenu = self;
     self.contentsNavigationController.viewControllers = @[viewController];
+    [viewController viewWillTransition];
 }
 
 #pragma mark -- Button Actions --
