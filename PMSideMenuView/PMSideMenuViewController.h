@@ -16,7 +16,8 @@
 @property (nonatomic) NSIndexPath *currentSideMenuIndexPath;
 @property (nonatomic) id<PMSideMenuListViewControllerDelegate> delegate;
 
--(void)transitionToSepcificViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath;
+-(void)moveToViewControllerAtIndexPath:(NSIndexPath *)indexPath params:(NSDictionary *)params;
+-(void)moveToViewControllerAtIndexPath:(NSIndexPath *)indexPath;
 
 -(void)setSideMenuHidden:(BOOL)hidden animated:(BOOL)animated;
 -(void)toggleSideMenu;

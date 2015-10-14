@@ -12,6 +12,7 @@
 @interface PMSideMenuBaseViewController : UIViewController
 
 @property (nonatomic,weak) PMSideMenuViewController *sideMenu;
+@property (nonatomic) NSDictionary *params;
 
 -(void)viewWillTransition;
 

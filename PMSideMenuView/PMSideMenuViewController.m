@@ -25,7 +25,6 @@ static CGPoint lastMotionDiff;
 @property (nonatomic) UIView *coverView;
 
 -(void)createView;
--(UIViewController *)getViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath;
 -(void)setContentViewController:(UIViewController *)viewController;
 @end
 
@@ -78,7 +77,7 @@ static CGPoint lastMotionDiff;
     self.sideMenuListView.currentSideMenuIndexPath = self.currentSideMenuIndexPath;
     [self.view addSubview:self.sideMenuListView];
     
-    UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:self.currentSideMenuIndexPath];
+    PMSideMenuBaseViewController *vc = [self getViewControllerFromSideMenuIndexPath:self.currentSideMenuIndexPath];
     [self setContentViewController:vc];
     
     self.coverView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -103,19 +102,24 @@ static CGPoint lastMotionDiff;
 
 #pragma mark - Class Method
 
--(void)transitionToSepcificViewControllerFromSideMenuIndexPath:(NSIndexPath *)indexPath{
-    UIViewController *vc = [self getViewControllerFromSideMenuIndexPath:indexPath];
+-(void)moveToViewControllerAtIndexPath:(NSIndexPath *)indexPath{
+    [self moveToViewControllerAtIndexPath:indexPath params:nil];
+}
 
+-(void)moveToViewControllerAtIndexPath:(NSIndexPath *)indexPath params:(NSDictionary *)params{
+    PMSideMenuBaseViewController *vc = [self getViewControllerFromSideMenuIndexPath:indexPath];
+    vc.params = params;
+    
     if (!vc) {
         return;
     }
-
+    
     if (self.isVisible) {
         [self setSideMenuHidden:YES animated:YES];
     }
     [self setContentViewController:vc];
-
-    self.currentSideMenuIndexPath = indexPath;
+    
+    _currentSideMenuIndexPath = indexPath;
     self.sideMenuListView.currentSideMenuIndexPath = indexPath;
 }
 
@@ -283,7 +287,7 @@ static CGPoint lastMotionDiff;
         return;
     }
     
-    [self transitionToSepcificViewControllerFromSideMenuIndexPath:indexPath];
+    [self moveToViewControllerAtIndexPath:indexPath];
 }
 
 #pragma mark - Gesture Action
