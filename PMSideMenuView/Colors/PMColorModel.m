@@ -7,6 +7,7 @@
 //
 
 #import "PMColorModel.h"
+#import "UserDefaultManager.h"
 
 @implementation PMColorModel
 
@@ -58,7 +59,17 @@ static UIColor *todayColor;
 }
 
 +(void)setTodayColor{
-    todayColor = [self getRandomColor];
+    NSInteger colorType = [[UserDefaultManager getObjectForKey:DEFAULT_THEME_COLOR_TYPE] integerValue];
+    if (colorType == 0) {
+        todayColor = [self getRandomColor];
+    }else{
+        NSArray *colorList = [PMColorModel colorList];
+        if (colorType - 1 < [colorList count]) {
+            todayColor = [[PMColorModel colorList] objectAtIndex:colorType - 1];
+        }else{
+            todayColor = [self getRandomColor];
+        }
+    }
 }
 
 +(UIColor *)todayColor {
