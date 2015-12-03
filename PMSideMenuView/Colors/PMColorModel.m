@@ -13,16 +13,17 @@
 static UIColor *todayColor;
 
 +(NSArray *)colorList{
-    NSArray *colorArray = @[[UIColor colorWithRed:0.749 green:0.220 blue:0.188 alpha:1.000],
-                            [UIColor colorWithRed:0.761 green:0.416 blue:0.157 alpha:1.000],
-                            [UIColor colorWithRed:0.761 green:0.627 blue:0.090 alpha:1.000],
-                            [UIColor colorWithRed:0.553 green:0.788 blue:0.075 alpha:1.000],
-                            [UIColor colorWithRed:0.165 green:0.780 blue:0.510 alpha:1.000],
+    NSArray *colorArray = @[[UIColor colorWithWhite:0.000 alpha:1.000],
+                            [UIColor colorWithRed:0.694 green:0.196 blue:0.176 alpha:1.000],
+                            [UIColor colorWithRed:0.929 green:0.549 blue:0.157 alpha:1.000],
+                            [UIColor colorWithRed:0.980 green:0.820 blue:0.157 alpha:1.000],
+                            [UIColor colorWithRed:0.549 green:0.741 blue:0.098 alpha:1.000],
+                            [UIColor colorWithRed:0.333 green:0.690 blue:0.416 alpha:1.000],
                             [UIColor colorWithRed:0.212 green:0.686 blue:0.776 alpha:1.000],
                             [UIColor colorWithRed:0.200 green:0.442 blue:0.788 alpha:1.000],
                             [UIColor colorWithRed:0.447 green:0.173 blue:0.800 alpha:1.000],
-                            [UIColor colorWithRed:0.682 green:0.169 blue:0.800 alpha:1.000],
-                            [UIColor colorWithRed:0.951 green:0.212 blue:0.474 alpha:1.000]];
+                            [UIColor colorWithRed:0.533 green:0.208 blue:0.624 alpha:1.000],
+                            [UIColor colorWithRed:0.835 green:0.267 blue:0.435 alpha:1.000]];
     return colorArray;
 }
 
