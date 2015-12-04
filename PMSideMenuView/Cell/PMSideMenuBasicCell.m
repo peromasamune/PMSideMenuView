@@ -9,7 +9,7 @@
 #import "PMSideMenuBasicCell.h"
 #import "WMImageUtility.h"
 
-#define INDEX_MARGIN 5.0
+#define INDEX_MARGIN 3.0
 #define IMAGE_MARGIN 5.0
 #define BADGE_MARGIN 5.0
 
@@ -83,6 +83,7 @@
     if (highlighted) {
         [self.colorImageView setImageColor:self.highlightedColor];
         self.textLabel.textColor = self.highlightedColor;
+        self.badgeView.badgeColor = self.highlightedColor;
         [self.indicatorImageView setImageColor:self.highlightedColor];
     }else{
         [self updateAppearance];
