@@ -165,7 +165,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    //cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = [UIColor clearColor];
 }
 
 @end

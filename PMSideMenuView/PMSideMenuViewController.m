@@ -70,6 +70,8 @@ static CGPoint lastMotionDiff;
 //    bulrView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 //    bulrView.alpha = 1.0;
 //    [self.view addSubview:bulrView];
+    
+    self.view.backgroundColor = [UIColor colorWithWhite:0.99 alpha:1.0];
 
     self.sideMenuListView = [[PMSideMenuListView alloc] initWithFrame:self.view.bounds];
     self.sideMenuListView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
