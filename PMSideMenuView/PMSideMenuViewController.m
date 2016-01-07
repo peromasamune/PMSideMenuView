@@ -330,4 +330,12 @@ static CGPoint lastMotionDiff;
     return NO;
 }
 
+#pragma mark - InterfaceOrientation
+
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration{
+    if (self.isVisible) {
+        [self setSideMenuHidden:YES animated:NO];
+    }
+}
+
 @end
