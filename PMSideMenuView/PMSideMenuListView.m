@@ -136,7 +136,7 @@ typedef void (^SideMenuAnimationCompleteBlock)(BOOL completed);
         cell.colorImageView.originalImage = [UIImage imageNamed:item.imageUrl];
         cell.highlightedColor = item.tintColor;
         cell.isCellSelected = ([self.currentSideMenuIndexPath compare:indexPath] == NSOrderedSame);
-        cell.badgeView.text = (item.badgeCount) ? [NSString stringWithFormat:@"%ld",item.badgeCount] : nil;
+        cell.badgeView.text = (item.badgeCount) ? [NSString stringWithFormat:@"%ld",(long)item.badgeCount] : nil;
 
         return cell;
     }
